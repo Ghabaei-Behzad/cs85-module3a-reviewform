@@ -1,4 +1,5 @@
 <!-- 
+ Github.com repository: https://github.com/Ghabaei-Behzad/cs85-module3a-reviewform.git
  Behzad Ghabaei
  CS 85 - PHP programming
  Module 3A - ContactForm.php
@@ -163,13 +164,13 @@ Assignment Reflection.
    3. What were the most confusing parts?
    - Keeping track of the 'global $errorCount' variable moving inside functions.
    - syntax errors, and remembering to place a $ in front of variables.
-   - error message from if/ else statement on line 116.
+   - error message from if/ else statement on line 136-139 a nested if /else statement.
    - requires close attention to logic flow.
 
 4. What could be improved?
    - Catching all error strings inside an array to cleanly print them together later.
    - block cross-site script injection, with specialcharshtml
-   - on line 71,  Wrap the sticky evaluation for the <textarea> input inside a quick ternary check. 
+   - on line 79,  Wrap the sticky evaluation for the <textarea> input inside a quick ternary check. 
    - This prevents extra spaces from automatically stacking inside the box every single time, 
    - on reloading the form page. <textarea name="Message"><?php echo $Sender == "" && $Email == "" && $Subject == "" && $Message == "" ? "" : trim($Message); ?></textarea></p>  
 5. Why send a copy of the form to the sender?
