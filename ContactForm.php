@@ -133,19 +133,26 @@ if ($ShowForm == TRUE) { // Conditional structure to either display the form or 
 /*
 Assignment Reflection.
 1. What does each function do?
-   - validateInput: Strips formatting issues
-   - validateEmail: Verifies text structure matches a standard email layout.
-   - displayForm: Prints the HTML elements dynamically and remembers past input data.
-
+   - validateInput: Strips formatting issues.  Standardizes raw user text data by trimming spacing, stripping 
+     dangerous backslashes, converting HTML syntax into plain text entities, and 
+     catching empty inputs.
+   - validateEmail: Verifies text structure matches a standard email layout.   Extends the basic text cleaning by running PHP's internal 
+     validation check to ensure the format matches a genuine email structure.
+   - displayForm: Prints the HTML elements dynamically and remembers past input data.  Outputs clean HTML form elements onto the screen. It maps variables 
+     directly into the 'value' fields so the user doesn't have to retype everything 
+     if a mistake happens.
+    
 2. How is user input protected?
    - POST is like an envelope, but GET is like a postcard.
    - htmlspecialchars() neutralizes scripts. trim() eliminates spacing bypasses. 
    - $retval = htmlspecialchars($retval); for security! Convert special characters to HTML entities to prevent Cross-Site Scripting (XSS) attacks
+   - filter_var() protects the integrity of the recipient system from faulty email routing.
 
-3. What were the most confusing parts?
+   3. What were the most confusing parts?
    - Keeping track of the 'global $errorCount' variable moving inside functions.
    - syntax errors, and remembering to place a $ in front of variables.
    - error message from if/ else statement on line 116.
+   - requires close attention to logic flow.
 
 4. What could be improved?
    - Catching all error strings inside an array to cleanly print them together later.
@@ -154,7 +161,9 @@ Assignment Reflection.
    - This prevents extra spaces from automatically stacking inside the box every single time, 
    - on reloading the form page. <textarea name="Message"><?php echo $Sender == "" && $Email == "" && $Subject == "" && $Message == "" ? "" : trim($Message); ?></textarea></p>  
 5. Why send a copy of the form to the sender?
-   - It functions as a receipt, giving the user confirmation their data went through.
+   - It functions as a receipt, giving the user confirmation their data went through.  It guarantees their message went through, 
+     creates a digital paper trail for their records, and lets them double-check exactly 
+     what details they submitted.
     */
 ?>
 
