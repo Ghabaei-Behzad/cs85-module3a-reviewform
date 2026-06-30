@@ -119,24 +119,26 @@ Note that a copy is sent to the sender.
 */
 if ($ShowForm == TRUE) { // Conditional structure to either display the form or send the emails
     if ($errorCount > 0) {
-        echo "<p style='color: red;'>Please re-enter the form information below.</p>\n";
-    }
+        echo "<p>Please re-enter the form information below.</p>\n";
+    } //<p style='color: red;'> //make the message red.
     displayForm($Sender, $Email, $Subject, $Message);
 } else { // Form data is valid, prepare the email details
-    $To = "admin@example.com"; // Your admin email destination, website owner's email destination
+   // $To = "admin@example.com"; // Your admin email destination, website owner's email destination
     $SenderAddress = "$Sender <$Email>";
     
     // Formatted headers with standard line breaks for email clients
-    $Headers = "From: " . $SenderAddress . "\r\n" . "CC: " . $Email . "\r\n";
-    
+    // $Headers = "From: " . $SenderAddress . "\r\n" . "CC: " . $Email . "\r\n";
+    $Headers = "From: $SenderAddress\nCC: $SenderAddress\n";
     // Actually trigger the mail function and save the status to $result
-    $result = mail($To, $Subject, $Message, $Headers);
-    
+    //$result = mail($To, $Subject, $Message, $Headers);
+    $result = mail("recipient@example.com", $Subject, $Message, $Headers);
     if ($result) {
-        echo "<p>Your message has been sent, Thank you, " . htmlspecialchars($Sender) . ".</p>\n";
+       // echo "<p>Your message has been sent, Thank you, " . htmlspecialchars($Sender) . ".</p>\n";
+       echo "<p>Your message has been sent, Thank you, " . $Sender . ".</p>\n";
     } else {
         // Local environments (like Laravel Herd/XAMPP) without a configured mail server usually hit this fallback
-        echo "<p>Your data is valid! (Note: Email simulation completed, configure a local mail server like Mailpit to catch the actual delivery).</p>\n";
+        // echo "<p>Your data is valid! (Note: Email simulation completed, configure a local mail server like Mailpit to catch the actual delivery).</p>\n";
+        echo "<p>There was an error sending your message, " . $Sender . ".</p>\n";
     }
 }
 /*
