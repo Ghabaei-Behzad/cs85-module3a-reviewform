@@ -15,6 +15,8 @@
 
 <?php
 /* 
+Add HTML skeleton and input validation functions
+(After typing the HTML, validateInput, and validateEmail).
 This function takes two parameters. The first parameter, $data, is a string to be validated. 
 The second parameter, $fieldName, is the name of the form field. The function returns the $data 
 parameter after it has been cleaned up. Notice that the function uses the global variable $errorCount.
@@ -22,24 +24,24 @@ $errorCount will bring the global error counter into the function scope.
 */
 function validateInput($data, $fieldName){ //Clean and validate general text input.
     global $errorCount; // Initialize a global error counter to track validation failures across functions.
-    if (empty($data)) { // $data: The raw input value from the form.  Check if the user left the field completely empty
+    if (empty($data)) { // $data: The raw input value from the form.  Check if the user left the field completely empty.
         echo "\"$fieldName\" is a required field.<br />\n"; // $fieldName The name of the field being validated (for error messages).
-        ++$errorCount; // // Increment the error counter.
+        ++$errorCount; // Increment the error counter.
         $retval = "";
     } else {
         // Only cleanup if it isn't empty.
-        $retval = trim($data); // Remove extra spaces, tabs, or newlines from the beginning and end of the input
+        $retval = trim($data); // Remove extra spaces, tabs, or newlines from the beginning and end of the input.
         $retval = stripslashes($retval);  // Remove backslashes to prevent escaping issues.
-        // $retval = htmlspecialchars($retval); // Crucial for security! Convert special characters to HTML entities to prevent Cross-Site Scripting (XSS) attacks
+        // $retval = htmlspecialchars($retval); // Crucial for security. Convert special characters to HTML entities to prevent Cross-Site Scripting (XSS) attacks.
     }
-    return($retval); //The sanitized input data. return the safe, cleaned data.
+    return($retval); // The sanitized input data. Returns the safe, cleaned data.
 }
 
 /* 
 This function is almost exactly like the validateInput() function, but it adds a filter_var() 
 test to validate that the entered e-mail address is in the correct format. 
 */
-function validateEmail($data, $fieldName) { //Clean and validate email input specifically.
+function validateEmail($data, $fieldName) { // Clean and validate email input specifically.
     global $errorCount;
     if (empty($data)) {  //$data: The raw email input value from the form. Check if empty.
         echo "\"$fieldName\" is a required field.<br />\n"; //$fieldName: The name of the field (usually 'Email').
@@ -49,20 +51,25 @@ function validateEmail($data, $fieldName) { //Clean and validate email input spe
         $retval = filter_var($data, FILTER_SANITIZE_EMAIL);  
         if (!filter_var($retval, FILTER_VALIDATE_EMAIL)) {  // Built-in PHP filter to verify the structure looks like a real email address (i.e., user@domain.com)
             echo "\"$fieldName\" is not a valid e-mail address.<br />\n";
-            ++$errorCount; // FIXED: Increments error count so form stays visible on bad email structure
+            ++$errorCount; // FIXED: Increments error count so form stays visible on bad email structure.
         }
     }
-    return($retval); //The sanitized email data.
+    return($retval); // The sanitized email data.
 }
 
 /* 
-Renders the HTML form on the page.  
+Implement displayForm function (sticky form capability) (After typing the displayForm logic).
+Renders the HTML form on the page.  This is the form with name, email, subject and message, with
+two buttons, one for clear and the other for submit.
 This function takes one parameter for each form field and displays the form. 
 It uses the parameters for sticky form functionality.
+The &nbsp; stands for “non-breaking space” and is an HTML entity used to create a space character
+that prevents an automatic line break. Unlike a regular space that allows line breaks when the
+browser renders the text, a non-breaking space keeps two words or elements together on the same line.
 */
 function displayForm($Sender, $Email, $Subject, $Message) {
     ?>
-    <h2 style="text-align:center">Contact Me</h2>
+    <h2 style="text-align:center">Contact Me</h2>  
     <form name="contact" action="ContactForm.php" method="post">
         <p>Your Name: <input type="text" name="Sender" value="<?php echo $Sender; ?>" /> </p>
         <p>Your E-mail: <input type="text" name="Email" value="<?php echo $Email; ?>" /> </p>
@@ -85,6 +92,8 @@ $Subject = "";
 $Message = "";
 
 /* 
+Implement form submission processing and email routing logic
+ (After adding the $_POST checking and mail() conditions).
 add the following code to check for and validate the input. Note that $_POST['Email'] 
 is checked with the validateEmail() function instead of the validateInput() function. 
 */
@@ -104,7 +113,7 @@ if (isset($_POST['Submit'])) {
 }
 
 /* 
-add a conditional statement that checks the value of $ShowForm. If $ShowForm is TRUE, 
+Add a conditional statement that checks the value of $ShowForm. If $ShowForm is TRUE, 
 the form is displayed. Otherwise, an e-mail message is sent and a status message is displayed. 
 Note that a copy is sent to the sender. 
 */
@@ -131,6 +140,7 @@ if ($ShowForm == TRUE) { // Conditional structure to either display the form or 
     }
 }
 /*
+Adding project reflections and finalize inline documentation.
 Assignment Reflection.
 1. What does each function do?
    - validateInput: Strips formatting issues.  Standardizes raw user text data by trimming spacing, stripping 
